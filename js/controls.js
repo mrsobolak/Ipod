@@ -11,6 +11,7 @@ import { renderMenu, switchMenu, resolveMenu } from './ui.js';
 import * as player from './player.js';
 import { initImport, triggerImport, clearImportedMusic } from './import.js';
 import { receiveFromPC } from './pcsync.js';
+import { backupToFiles } from './backup.js';
 
 // ── Scroll State ─────────────────────────────────────────────
 
@@ -174,7 +175,8 @@ const actionRegistry = {
     shuffleAndPlay: () => player.shuffleAndPlay(),
     importMusic: () => triggerImport(),
     clearImportedMusic: () => clearImportedMusic(),
-    receiveFromPC: () => receiveFromPC()
+    receiveFromPC: () => receiveFromPC(),
+    backupToFiles: () => backupToFiles()
 };
 
 const selectAction = () => {

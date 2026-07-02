@@ -131,6 +131,7 @@ export const menus = {
                 { label: 'Shuffle', value: state.shuffle === 'off' ? 'Off' : 'Songs', action: toggleShuffle },
                 { label: 'Repeat', value: state.repeat === 'off' ? 'Off' : state.repeat === 'one' ? 'One' : 'All', action: toggleRepeat },
                 { label: 'Import Music...', actionName: 'importMusic' },
+                { label: 'Backup to Files...', actionName: 'backupToFiles' },
                 { label: 'Erase Imported Music', actionName: 'clearImportedMusic' }
             ];
         }
