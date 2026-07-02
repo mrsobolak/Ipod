@@ -1,0 +1,53 @@
+/* ── Update Notice ────────────────────────────────────────── */
+/* Native-feeling on-screen confirmation shown after an app update lands,
+   instead of silently reloading in the background. */
+
+#update-notice {
+    display: none;
+    position: absolute;
+    inset: 0;
+    z-index: 50;
+    background: rgba(0, 0, 0, 0.55);
+    align-items: center;
+    justify-content: center;
+}
+
+#update-notice.active {
+    display: flex;
+}
+
+.update-notice-box {
+    background: #f4f4f4;
+    border-radius: calc(var(--u) * 3);
+    padding: calc(var(--u) * 4) calc(var(--u) * 3.5);
+    width: 78%;
+    text-align: center;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: calc(var(--u) * 1.6);
+}
+
+.update-notice-title {
+    color: #111;
+    font-weight: 700;
+    font-size: calc(var(--u) * 4);
+}
+
+.update-notice-text {
+    color: #333;
+    font-size: calc(var(--u) * 3.1);
+    line-height: 1.35;
+}
+
+.update-notice-button {
+    margin-top: calc(var(--u) * 1);
+    background: #2f7ff0;
+    color: #fff;
+    font-weight: 600;
+    font-size: calc(var(--u) * 3.3);
+    padding: calc(var(--u) * 1.2) calc(var(--u) * 6);
+    border-radius: calc(var(--u) * 1.6);
+    cursor: pointer;
+}

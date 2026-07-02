@@ -13,6 +13,7 @@ import { initImport, triggerImport, clearImportedMusic } from './import.js';
 import { receiveFromPC } from './pcsync.js';
 import { backupToFiles } from './backup.js';
 import { initMedia, triggerImportPhotos, triggerImportVideos, nextPhoto, prevPhoto, closePhotoViewer, toggleVideoPlayback, closeVideoViewer } from './media.js';
+import { initSwUpdate, dismissUpdateNotice } from './swupdate.js';
 
 // ── Scroll State ─────────────────────────────────────────────
 
@@ -189,6 +190,7 @@ const actionRegistry = {
 };
 
 const selectAction = () => {
+    if (state.isShowingUpdateNotice) { dismissUpdateNotice(); return; }
     if (state.isNowPlaying) return;
     if (state.isViewingVideo) {
         toggleVideoPlayback();
@@ -217,6 +219,7 @@ const selectAction = () => {
 };
 
 const backAction = () => {
+    if (state.isShowingUpdateNotice) { dismissUpdateNotice(); return; }
     if (state.isViewingPhoto) {
         closePhotoViewer();
         return;
@@ -271,6 +274,7 @@ export async function initControls() {
     bindButtons();
     initImport();
     initMedia();
+    initSwUpdate();
 
     await Promise.all([loadLibrary(), refreshPhotos(), refreshVideos()]);
     renderMenu(elements.menuPrimary);

@@ -109,7 +109,8 @@ export const state = {
     isViewingPhoto: false,
     currentPhotoIndex: 0,
     isViewingVideo: false,
-    currentVideoIndex: 0
+    currentVideoIndex: 0,
+    isShowingUpdateNotice: false
 };
 
 // ── Setting Toggles ──────────────────────────────────────────

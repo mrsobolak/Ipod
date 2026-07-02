@@ -179,6 +179,13 @@ class IpodDesign extends HTMLElement {
           <div id="video-viewer">
             <video id="video-viewer-el" playsinline></video>
           </div>
+          <div id="update-notice">
+            <div class="update-notice-box">
+              <div class="update-notice-title">iPod Updated</div>
+              <div class="update-notice-text">Your iPod has been updated.</div>
+              <div class="update-notice-button selected" id="update-notice-ok">OK</div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

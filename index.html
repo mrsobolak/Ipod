@@ -59,6 +59,7 @@
   <link rel="stylesheet" href="css/menu.css">
   <link rel="stylesheet" href="css/now-playing.css">
   <link rel="stylesheet" href="css/media.css">
+  <link rel="stylesheet" href="css/update-notice.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap"
@@ -90,13 +91,6 @@
     </div>
   </div>
 
-
-  <div id="app-update-overlay" aria-live="polite" aria-label="Updating iPod" style="position:absolute; inset:0; z-index:30000; display:none; align-items:center; justify-content:center; pointer-events:none;">
-    <div class="ipod-loader-box">
-      <div class="ipod-loader-spinner" aria-hidden="true"></div>
-      <div class="ipod-loader-text">UPDATING YOUR IPOD...</div>
-    </div>
-  </div>
   <div class="label-corner label-bottom-left">
     built in <a href="https://doodledev.app" target="_blank" rel="noopener noreferrer">doodledev</a>
   </div>
@@ -110,14 +104,13 @@
     // version was pushed), reload once so the new code actually runs instead
     // of just sitting cached-but-unused until the next cold launch.
     if ('serviceWorker' in navigator) {
-      let hasReloaded = false;
+      let notified = false;
       navigator.serviceWorker.addEventListener('controllerchange', () => {
-        if (hasReloaded) return;
-        hasReloaded = true;
-        const overlay = document.getElementById('app-update-overlay');
-        if (overlay) overlay.style.display = 'flex';
-        setTimeout(() => window.location.reload(), 700);
+        if (notified) return;
+        notified = true;
+        window.dispatchEvent(new CustomEvent('sw-update-ready'));
       });
+
 
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('sw.js').then((reg) => {

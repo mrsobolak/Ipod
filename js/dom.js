@@ -26,7 +26,9 @@ export const elements = {
     photoViewerImg: null,
     photoViewerCaption: null,
     videoViewer: null,
-    videoViewerEl: null
+    videoViewerEl: null,
+    updateNotice: null,
+    updateNoticeOk: null
 };
 
 export function initDom() {
@@ -54,6 +56,9 @@ export function initDom() {
     elements.photoViewerCaption = document.querySelector('.media-viewer-caption');
     elements.videoViewer = document.getElementById('video-viewer');
     elements.videoViewerEl = document.getElementById('video-viewer-el');
+
+    elements.updateNotice = document.getElementById('update-notice');
+    elements.updateNoticeOk = document.getElementById('update-notice-ok');
 
     return elements;
 }

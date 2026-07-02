@@ -7,7 +7,7 @@
  * keep serving the stale version from cache.
  */
 
-const CACHE_NAME = 'ipod-shell-v12';
+const CACHE_NAME = 'ipod-shell-v13';
 
 const SHELL_FILES = [
     './',
@@ -19,6 +19,7 @@ const SHELL_FILES = [
     './css/menu.css',
     './css/now-playing.css',
     './css/media.css',
+    './css/update-notice.css',
     './js/main.js',
     './js/dom.js',
     './js/config.js',
@@ -32,12 +33,14 @@ const SHELL_FILES = [
     './js/backup.js',
     './js/mediadb.js',
     './js/media.js',
+    './js/swupdate.js',
     './js/zoomPrevention.js',
     './js/components/IpodDesign.js',
     './js/library.json',
     './public/icons/icon-180.png',
     './public/icons/icon-192.png',
-    './public/icons/icon-512.png'
+    './public/icons/icon-512.png',
+    './public/textures/scratched-metal.jpg'
 ];
 
 self.addEventListener('install', (event) => {
