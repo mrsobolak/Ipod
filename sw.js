@@ -7,7 +7,7 @@
  * keep serving the stale version from cache.
  */
 
-const CACHE_NAME = 'ipod-shell-v10';
+const CACHE_NAME = 'ipod-shell-v11';
 
 const SHELL_FILES = [
     './',
@@ -18,6 +18,7 @@ const SHELL_FILES = [
     './css/screen.css',
     './css/menu.css',
     './css/now-playing.css',
+    './css/media.css',
     './js/main.js',
     './js/dom.js',
     './js/config.js',
@@ -29,6 +30,8 @@ const SHELL_FILES = [
     './js/import.js',
     './js/pcsync.js',
     './js/backup.js',
+    './js/mediadb.js',
+    './js/media.js',
     './js/zoomPrevention.js',
     './js/components/IpodDesign.js',
     './js/library.json',

@@ -6,12 +6,13 @@
  * to their corresponding actions and boots the app on load.
  */
 
-import { state, elements, loadLibrary } from './config.js';
+import { state, elements, loadLibrary, refreshPhotos, refreshVideos } from './config.js';
 import { renderMenu, switchMenu, resolveMenu } from './ui.js';
 import * as player from './player.js';
 import { initImport, triggerImport, clearImportedMusic } from './import.js';
 import { receiveFromPC } from './pcsync.js';
 import { backupToFiles } from './backup.js';
+import { initMedia, triggerImportPhotos, triggerImportVideos, nextPhoto, prevPhoto, closePhotoViewer, toggleVideoPlayback, closeVideoViewer } from './media.js';
 
 // ── Scroll State ─────────────────────────────────────────────
 
@@ -65,6 +66,12 @@ function processScroll() {
                 return;
             }
         }
+        return;
+    }
+
+    // Viewing a photo or video: wheel does nothing (avoid confusing menu jumps)
+    if (state.isViewingPhoto || state.isViewingVideo) {
+        totalRotation = 0;
         return;
     }
 
@@ -176,11 +183,19 @@ const actionRegistry = {
     importMusic: () => triggerImport(),
     clearImportedMusic: () => clearImportedMusic(),
     receiveFromPC: () => receiveFromPC(),
-    backupToFiles: () => backupToFiles()
+    backupToFiles: () => backupToFiles(),
+    importPhotos: () => triggerImportPhotos(),
+    importVideos: () => triggerImportVideos()
 };
 
 const selectAction = () => {
     if (state.isNowPlaying) return;
+    if (state.isViewingVideo) {
+        toggleVideoPlayback();
+        return;
+    }
+    if (state.isViewingPhoto) return;
+
     const items = resolveMenu(state.currentMenuKey).items;
     if (items.length === 0) return;
 
@@ -202,6 +217,14 @@ const selectAction = () => {
 };
 
 const backAction = () => {
+    if (state.isViewingPhoto) {
+        closePhotoViewer();
+        return;
+    }
+    if (state.isViewingVideo) {
+        closeVideoViewer();
+        return;
+    }
     if (state.isNowPlaying) {
         state.isNowPlaying = false;
         renderMenu(elements.menuPrimary);
@@ -214,14 +237,25 @@ const backAction = () => {
     }
 };
 
+const nextAction = () => {
+    if (state.isViewingPhoto) { nextPhoto(); return; }
+    player.nextTrack();
+};
+
+const prevAction = () => {
+    if (state.isViewingPhoto) { prevPhoto(); return; }
+    player.prevTrack();
+};
+
 // ── Button Wiring ────────────────────────────────────────────
 
 function bindButtons() {
     bindButton(elements.midButton, selectAction);
     bindButton(elements.menuButton, backAction, 'rock-menu');
-    bindButton(elements.nextButton, player.nextTrack, 'rock-next');
-    bindButton(elements.prevButton, player.prevTrack, 'rock-prev');
+    bindButton(elements.nextButton, nextAction, 'rock-next');
+    bindButton(elements.prevButton, prevAction, 'rock-prev');
     bindButton(elements.playPauseButton, () => {
+        if (state.isViewingVideo) { toggleVideoPlayback(); return; }
         if (!state.queue.length || state.currentIndex < 0) return;
         if (elements.audio.paused) elements.audio.play();
         else elements.audio.pause();
@@ -236,8 +270,9 @@ export async function initControls() {
     bindWheelPointerEvents();
     bindButtons();
     initImport();
+    initMedia();
 
-    await loadLibrary();
+    await Promise.all([loadLibrary(), refreshPhotos(), refreshVideos()]);
     renderMenu(elements.menuPrimary);
 
     controlsInitialized = true;

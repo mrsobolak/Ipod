@@ -7,13 +7,18 @@
 
 import { elements } from './dom.js';
 import { getAllSongs } from './musicdb.js';
+import { getAllPhotos, getAllVideos } from './mediadb.js';
 
 // ── Library ──────────────────────────────────────────────────
 
 export let library = [];
+export let photos = [];
+export let videos = [];
 
 // Track blob URLs we've created so we can revoke them on refresh (avoid leaks).
 let activeObjectUrls = [];
+let activePhotoUrls = [];
+let activeVideoUrls = [];
 
 function revokeActiveObjectUrls() {
     activeObjectUrls.forEach(url => URL.revokeObjectURL(url));
@@ -67,6 +72,26 @@ export async function refreshUserLibrary() {
     library.push(...bundled, ...userSongs);
 }
 
+// ── Photos / Videos ──────────────────────────────────────────
+
+export async function refreshPhotos() {
+    const records = await getAllPhotos();
+    activePhotoUrls.forEach(url => URL.revokeObjectURL(url));
+    const mapped = records.map(rec => ({ id: rec.id, name: rec.name, url: URL.createObjectURL(rec.blob) }));
+    activePhotoUrls = mapped.map(p => p.url);
+    photos.length = 0;
+    photos.push(...mapped);
+}
+
+export async function refreshVideos() {
+    const records = await getAllVideos();
+    activeVideoUrls.forEach(url => URL.revokeObjectURL(url));
+    const mapped = records.map(rec => ({ id: rec.id, name: rec.name, url: URL.createObjectURL(rec.blob) }));
+    activeVideoUrls = mapped.map(v => v.url);
+    videos.length = 0;
+    videos.push(...mapped);
+}
+
 // ── Application State ────────────────────────────────────────
 
 export const state = {
@@ -80,7 +105,11 @@ export const state = {
     lastRenderedMenuKey: null,
     shuffle: 'off',   // 'off' | 'songs'
     repeat: 'off',    // 'off' | 'one' | 'all'
-    importStatus: ''  // transient status line shown in the Import menu
+    importStatus: '', // transient status line shown in the Import menu
+    isViewingPhoto: false,
+    currentPhotoIndex: 0,
+    isViewingVideo: false,
+    currentVideoIndex: 0
 };
 
 // ── Setting Toggles ──────────────────────────────────────────
@@ -106,7 +135,8 @@ export const menus = {
         title: 'iPod',
         items: [
             { label: 'Music', submenu: 'music' },
-            { label: 'Photos', disabled: true },
+            { label: 'Photos', submenu: 'photos' },
+            { label: 'Videos', submenu: 'videos' },
             { label: 'Extras', disabled: true },
             { label: 'Settings', submenu: 'settings' },
             { label: 'Shuffle Songs', actionName: 'shuffleAndPlay' },
@@ -138,7 +168,9 @@ export const menus = {
     },
     artists: { title: 'Artists', dynamic: 'artists' },
     albums: { title: 'Albums', dynamic: 'albums' },
-    songs: { title: 'Songs', dynamic: 'songs' }
+    songs: { title: 'Songs', dynamic: 'songs' },
+    photos: { title: 'Photos', dynamic: 'photos' },
+    videos: { title: 'Videos', dynamic: 'videos' }
 };
 
 // ── Element Cache ────────────────────────────────────────────

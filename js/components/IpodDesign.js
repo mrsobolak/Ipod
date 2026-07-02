@@ -172,6 +172,13 @@ class IpodDesign extends HTMLElement {
               </div>
             </div>
           </div>
+          <div id="photo-viewer">
+            <img id="photo-viewer-img" src="" alt="">
+            <div class="media-viewer-caption"></div>
+          </div>
+          <div id="video-viewer">
+            <video id="video-viewer-el" playsinline></video>
+          </div>
         </div>
       </div>
     </section>

@@ -6,8 +6,9 @@
  * and the slide-left/slide-right transition between menu levels.
  */
 
-import { library, menus, state, elements } from './config.js';
+import { library, photos, videos, menus, state, elements } from './config.js';
 import * as player from './player.js';
+import * as media from './media.js';
 
 // ── Dynamic Menu Items ───────────────────────────────────────
 
@@ -71,6 +72,22 @@ function getDynamicItems(key) {
             label: song.title,
             action: () => player.playQueue(songs, idx)
         }));
+    }
+
+    if (key === 'photos') {
+        const items = [{ label: 'Import Photos...', actionName: 'importPhotos' }];
+        photos.forEach((photo, idx) => {
+            items.push({ label: photo.name, action: () => media.openPhotoViewer(idx) });
+        });
+        return items;
+    }
+
+    if (key === 'videos') {
+        const items = [{ label: 'Import Videos...', actionName: 'importVideos' }];
+        videos.forEach((video, idx) => {
+            items.push({ label: video.name, action: () => media.openVideoViewer(idx) });
+        });
+        return items;
     }
 
     return [];

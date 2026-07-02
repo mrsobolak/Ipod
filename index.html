@@ -58,6 +58,7 @@
   <link rel="stylesheet" href="css/screen.css">
   <link rel="stylesheet" href="css/menu.css">
   <link rel="stylesheet" href="css/now-playing.css">
+  <link rel="stylesheet" href="css/media.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap"
@@ -76,6 +77,10 @@
 
   <!-- Hidden file input for on-device music import (Import Music... menu item) -->
   <input type="file" id="music-file-input" accept="audio/mpeg,audio/mp3,.mp3" multiple
+    style="position:absolute; width:1px; height:1px; opacity:0; pointer-events:none;">
+  <input type="file" id="photo-file-input" accept="image/*" multiple
+    style="position:absolute; width:1px; height:1px; opacity:0; pointer-events:none;">
+  <input type="file" id="video-file-input" accept="video/*" multiple
     style="position:absolute; width:1px; height:1px; opacity:0; pointer-events:none;">
 
   <div id="app-shell-loader" aria-live="polite" aria-label="Loading iPod shell">

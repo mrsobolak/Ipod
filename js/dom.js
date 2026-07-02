@@ -21,7 +21,12 @@ export const elements = {
     menuButton: null,
     nextButton: null,
     prevButton: null,
-    playPauseButton: null
+    playPauseButton: null,
+    photoViewer: null,
+    photoViewerImg: null,
+    photoViewerCaption: null,
+    videoViewer: null,
+    videoViewerEl: null
 };
 
 export function initDom() {
@@ -44,6 +49,11 @@ export function initDom() {
     elements.nextButton = document.getElementById('next');
     elements.prevButton = document.getElementById('prev');
     elements.playPauseButton = document.getElementById('play-pause');
+    elements.photoViewer = document.getElementById('photo-viewer');
+    elements.photoViewerImg = document.getElementById('photo-viewer-img');
+    elements.photoViewerCaption = document.querySelector('.media-viewer-caption');
+    elements.videoViewer = document.getElementById('video-viewer');
+    elements.videoViewerEl = document.getElementById('video-viewer-el');
 
     return elements;
 }
