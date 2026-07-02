@@ -85,6 +85,13 @@
     </div>
   </div>
 
+
+  <div id="app-update-overlay" aria-live="polite" aria-label="Updating iPod" style="position:absolute; inset:0; z-index:30000; display:none; align-items:center; justify-content:center; pointer-events:none;">
+    <div class="ipod-loader-box">
+      <div class="ipod-loader-spinner" aria-hidden="true"></div>
+      <div class="ipod-loader-text">UPDATING YOUR IPOD...</div>
+    </div>
+  </div>
   <div class="label-corner label-bottom-left">
     built in <a href="https://doodledev.app" target="_blank" rel="noopener noreferrer">doodledev</a>
   </div>
@@ -102,7 +109,9 @@
       navigator.serviceWorker.addEventListener('controllerchange', () => {
         if (hasReloaded) return;
         hasReloaded = true;
-        window.location.reload();
+        const overlay = document.getElementById('app-update-overlay');
+        if (overlay) overlay.style.display = 'flex';
+        setTimeout(() => window.location.reload(), 700);
       });
 
       window.addEventListener('load', () => {
