@@ -128,7 +128,7 @@ class IpodDesign extends HTMLElement {
         </g>
       </svg>
     </div>
-    <section class="item" id="viewport" style="height: 42.3756%; isolation: isolate; left: 8.08625%; top: 0.321027%; width: 91.3747%; z-index: 4">
+    <section class="item" id="viewport" style="height: 39.41%; isolation: isolate; left: 11.28%; top: 3%; width: 84.98%; z-index: 4">
       <div class="item" id="screen" style="height: 88.6364%; left: 0%; opacity: 1; top: 11.3636%; width: 91.7404%; z-index: 2">
         <svg class="shape" viewBox="0 0 311.000000 234.000000" width="311.000000" height="234.000000" preserveAspectRatio="none">
           <defs>
@@ -181,7 +181,7 @@ class IpodDesign extends HTMLElement {
         </div>
       </div>
     </section>
-    <section class="item" id="control-wheel" style="height: 37.721%; isolation: isolate; left: 18.3288%; top: 52.1669%; width: 63.3423%; z-index: 3">
+    <section class="item" id="control-wheel" style="height: 35.08%; isolation: isolate; left: 20.55%; top: 53.49%; width: 58.91%; z-index: 3">
       <div class="item interactive" id="wheel" style="height: 100%; left: 0%; top: 0%; width: 100%; z-index: 2">
         <svg class="shape" viewBox="0 0 236 236" preserveAspectRatio="none" width="236" height="236">
           <defs>
