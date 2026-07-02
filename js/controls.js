@@ -14,6 +14,7 @@ import { receiveFromPC } from './pcsync.js';
 import { backupToFiles } from './backup.js';
 import { initMedia, triggerImportPhotos, triggerImportVideos, nextPhoto, prevPhoto, closePhotoViewer, toggleVideoPlayback, closeVideoViewer } from './media.js';
 import { initSwUpdate, dismissUpdateNotice } from './swupdate.js';
+import { playWheelTick, playButtonClick } from './clicksound.js';
 
 // ── Scroll State ─────────────────────────────────────────────
 
@@ -92,6 +93,7 @@ function processScroll() {
 
         totalRotation += totalRotation > 0 ? -ROTATION_THRESHOLD : ROTATION_THRESHOLD;
         renderMenu(elements.menuPrimary);
+        playWheelTick();
 
         if (Math.abs(totalRotation) >= ROTATION_THRESHOLD) {
             requestAnimationFrame(processScroll);
@@ -167,6 +169,7 @@ function bindButton(el, action, rockClass = null) {
         el.classList.remove('pressed');
         if (rockClass) elements.controlWheel.classList.remove(rockClass);
         if (!hasScrolled && action) {
+            playButtonClick();
             action();
             totalRotation = 0;
             hasScrolled = false;
