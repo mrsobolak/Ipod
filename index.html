@@ -94,10 +94,26 @@
 
   <script type="module" src="js/main.js"></script>
   <script>
+    // Auto-updater: when a new service worker takes over (because a fresh
+    // version was pushed), reload once so the new code actually runs instead
+    // of just sitting cached-but-unused until the next cold launch.
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js').catch((err) => console.warn('SW registration failed:', err));
+      let hasReloaded = false;
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (hasReloaded) return;
+        hasReloaded = true;
+        window.location.reload();
       });
+
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').then((reg) => {
+          document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') reg.update();
+          });
+        }).catch((err) => console.warn('SW registration failed:', err));
+      });
+    }
+  </script>
     }
   </script>
 </body>
