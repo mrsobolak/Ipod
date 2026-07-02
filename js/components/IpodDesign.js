@@ -121,13 +121,7 @@ class IpodDesign extends HTMLElement {
     </defs>
   </svg>
   <div id="ipod">
-    <div class="item" id="base" style="height: 100%; left: 0%; opacity: 1; top: 0%; width: 100%; z-index: 2">
-      <svg class="shape" viewBox="0 0 371.000000 623.000000" width="371.000000" height="623.000000" preserveAspectRatio="none" style="overflow-x: visible; overflow-y: visible">
-        <g filter="url(#shared-outer-3)">
-          <path class="fill-path" d="M 36 0 L 335 0 A 36 36 0 0 1 371 36 L 371 587 A 36 36 0 0 1 335 623 L 36 623 A 36 36 0 0 1 0 587 L 0 36 A 36 36 0 0 1 36 0 Z" fill="url(#shared-fill-1)" vector-effect="non-scaling-stroke" filter="url(#shared-inner-2)"></path>
-        </g>
-      </svg>
-    </div>
+    <div class="item" id="ipod-shell" style="height: 100%; left: 0%; top: 0%; width: 100%; z-index: 1; border-radius: 9.7% / 5.8%; background: linear-gradient(135deg, #f6f6f6 0%, #dcdcdc 30%, #b4b4b4 60%, #8a8a8a 100%); box-shadow: 0 10px 34px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.6), inset 0 -1px 2px rgba(0,0,0,0.25);"></div>
     <section class="item" id="viewport" style="height: 39.41%; isolation: isolate; left: 11.28%; top: 3%; width: 84.98%; z-index: 4">
       <div class="item" id="screen" style="height: 88.6364%; left: 0%; opacity: 1; top: 11.3636%; width: 91.7404%; z-index: 2">
         <svg class="shape" viewBox="0 0 311.000000 234.000000" width="311.000000" height="234.000000" preserveAspectRatio="none">
