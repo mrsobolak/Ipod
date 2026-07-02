@@ -1,10 +1,12 @@
 /**
  * clicksound.js — Synthesized click-wheel tick sound.
  *
- * Not a sample of any real device's sound — this generates a short,
- * filtered noise burst on the fly via the Web Audio API to approximate
- * that mechanical "tick" feel. AudioContext is created lazily on first
- * user interaction (required by browser autoplay policies).
+ * Not a sample of any real device's sound — generates a short, sharp
+ * transient on the fly via the Web Audio API. Real iPod click wheels used
+ * a piezoelectric element, which produces a very brief, high-frequency
+ * "tick" rather than a broad noise burst — this aims for that character:
+ * short duration, high-passed, fast decay, and kept quiet so it doesn't
+ * spike over music playing at full volume.
  */
 
 let ctx = null;
@@ -20,16 +22,17 @@ function getContext() {
 }
 
 /**
- * Plays a short synthetic "tick" — a brief bandpass-filtered noise burst
- * with a fast exponential decay, roughly mimicking a mechanical click.
+ * Plays a short synthetic "tick" — a brief high-passed noise burst with a
+ * very fast decay, approximating a piezoelectric click.
  * @param {number} pitch - 1.0 = normal, >1 = higher/lighter, <1 = lower/heavier
+ * @param {number} volume - peak gain, kept low so it never overpowers audio playback
  */
-export function playClick(pitch = 1) {
+export function playClick(pitch = 1, volume = 0.06) {
     const audioCtx = getContext();
     if (!audioCtx) return;
 
-    const duration = 0.02;
-    const sampleCount = Math.floor(audioCtx.sampleRate * duration);
+    const duration = 0.008; // piezo ticks are very brief — not a "shh", a "tk"
+    const sampleCount = Math.max(1, Math.floor(audioCtx.sampleRate * duration));
     const buffer = audioCtx.createBuffer(1, sampleCount, audioCtx.sampleRate);
     const data = buffer.getChannelData(0);
     for (let i = 0; i < sampleCount; i++) {
@@ -39,17 +42,25 @@ export function playClick(pitch = 1) {
     const source = audioCtx.createBufferSource();
     source.buffer = buffer;
 
-    const filter = audioCtx.createBiquadFilter();
-    filter.type = 'bandpass';
-    filter.frequency.value = 2800 * pitch;
-    filter.Q.value = 1.2;
+    // High-pass to strip the low end — piezo ticks are all high-frequency snap,
+    // no body/boom to them.
+    const highpass = audioCtx.createBiquadFilter();
+    highpass.type = 'highpass';
+    highpass.frequency.value = 3500 * pitch;
+
+    const peak = audioCtx.createBiquadFilter();
+    peak.type = 'peaking';
+    peak.frequency.value = 5500 * pitch;
+    peak.Q.value = 2;
+    peak.gain.value = 6;
 
     const gain = audioCtx.createGain();
-    gain.gain.setValueAtTime(0.35, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+    gain.gain.setValueAtTime(volume, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
 
-    source.connect(filter);
-    filter.connect(gain);
+    source.connect(highpass);
+    highpass.connect(peak);
+    peak.connect(gain);
     gain.connect(audioCtx.destination);
 
     source.start();
@@ -58,10 +69,11 @@ export function playClick(pitch = 1) {
 
 /** Slightly heavier click for physical button presses vs. wheel ticks. */
 export function playButtonClick() {
-    playClick(0.75);
+    playClick(0.85, 0.07);
 }
 
-/** Lighter, quicker click for each wheel scroll step. */
+/** Lighter, quicker click for each wheel scroll step — quietest of the two
+ *  since it fires far more often during a scroll gesture. */
 export function playWheelTick() {
-    playClick(1.15);
+    playClick(1.2, 0.045);
 }
