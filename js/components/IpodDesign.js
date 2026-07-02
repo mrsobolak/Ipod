@@ -122,7 +122,7 @@ class IpodDesign extends HTMLElement {
   </svg>
   <div id="ipod">
     <div class="item" id="ipod-shell" style="height: 100%; left: 0%; top: 0%; width: 100%; z-index: 1; border-radius: 9.7% / 5.8%; background: linear-gradient(135deg, #f6f6f6 0%, #dcdcdc 30%, #b4b4b4 60%, #8a8a8a 100%); box-shadow: 0 10px 34px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.6), inset 0 -1px 2px rgba(0,0,0,0.25);"></div>
-    <section class="item" id="viewport" style="height: 39.41%; isolation: isolate; left: 11.28%; top: 3%; width: 84.98%; z-index: 4">
+    <section class="item" id="viewport" style="height: 35.47%; isolation: isolate; left: 15.53%; top: 6%; width: 76.48%; z-index: 4">
       <div class="item" id="screen" style="height: 88.6364%; left: 0%; opacity: 1; top: 11.3636%; width: 91.7404%; z-index: 2">
         <svg class="shape" viewBox="0 0 311.000000 234.000000" width="311.000000" height="234.000000" preserveAspectRatio="none">
           <defs>
@@ -175,7 +175,7 @@ class IpodDesign extends HTMLElement {
         </div>
       </div>
     </section>
-    <section class="item" id="control-wheel" style="height: 35.08%; isolation: isolate; left: 20.55%; top: 53.49%; width: 58.91%; z-index: 3">
+    <section class="item" id="control-wheel" style="height: 31.57%; isolation: isolate; left: 23.49%; top: 55.25%; width: 53.02%; z-index: 3">
       <div class="item interactive" id="wheel" style="height: 100%; left: 0%; top: 0%; width: 100%; z-index: 2">
         <svg class="shape" viewBox="0 0 236 236" preserveAspectRatio="none" width="236" height="236">
           <defs>
