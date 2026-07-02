@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, shrink-to-fit=no, viewport-fit=cover">
+  <title>Interactive iPod</title>
+  <meta name="description"
+    content="Interactive iPod simulator for the web with click wheel navigation, music library browsing, and now playing controls. Built with vanilla HTML, CSS, and JavaScript.">
+  <meta name="keywords"
+    content="interactive ipod, ipod simulator, click wheel ui, web music player, retro ui, vibe coding">
+  <meta name="author" content="Mitch Ivin">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <link rel="canonical" href="https://mitchivin.github.io/ipod/">
+  <link rel="icon" type="image/png" href="public/fav.png">
+
+  <!-- PWA: installable, offline, no signing required -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#141416">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="iPod">
+  <link rel="apple-touch-icon" href="public/icons/icon-180.png">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Interactive iPod">
+  <meta property="og:title" content="Interactive iPod">
+  <meta property="og:description"
+    content="Browse artists, albums, and songs with a realistic click wheel iPod interface in your browser.">
+  <meta property="og:url" content="https://mitchivin.github.io/ipod/">
+  <meta property="og:image" content="https://mitchivin.github.io/ipod/public/social/interactive-ipod-og.jpg">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Interactive iPod">
+  <meta name="twitter:description"
+    content="Interactive iPod simulator with click wheel navigation, music playback, and retro UI styling.">
+  <meta name="twitter:image" content="https://mitchivin.github.io/ipod/public/social/interactive-ipod-og.jpg">
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Interactive iPod Simulator",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "Web",
+      "url": "https://mitchivin.github.io/ipod/",
+      "description": "Interactive iPod simulator for the web with click wheel navigation, library browsing, and music playback.",
+      "author": {
+        "@type": "Person",
+        "name": "Mitch Ivin",
+        "url": "https://mitchivin.com/"
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/ipod.css">
+  <link rel="stylesheet" href="css/screen.css">
+  <link rel="stylesheet" href="css/menu.css">
+  <link rel="stylesheet" href="css/now-playing.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Icons&display=block">
+</head>
+
+<body class="app-loading">
+  <div class="label-corner label-top-left">iPod Classic</div>
+  <div class="label-corner label-top-right">Preset 2</div>
+
+  <!-- ── Device Shell ───────────────────────────────────────── -->
+  <div id="ipod-container">
+    <ipod-design id="ipod-component"></ipod-design>
+  </div>
+
+  <!-- Hidden file input for on-device music import (Import Music... menu item) -->
+  <input type="file" id="music-file-input" accept="audio/mpeg,audio/mp3,.mp3" multiple
+    style="position:absolute; width:1px; height:1px; opacity:0; pointer-events:none;">
+
+  <div id="app-shell-loader" aria-live="polite" aria-label="Loading iPod shell">
+    <div class="ipod-loader-box">
+      <div class="ipod-loader-spinner" aria-hidden="true"></div>
+      <div class="ipod-loader-text">BOOTING SHELL...</div>
+    </div>
+  </div>
+
+  <div class="label-corner label-bottom-left">
+    built in <a href="https://doodledev.app" target="_blank" rel="noopener noreferrer">doodledev</a>
+  </div>
+  <div class="label-corner label-bottom-right">
+    by <a href="https://mitchivin.com/" target="_blank" rel="noopener noreferrer">Mitch Ivin</a>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch((err) => console.warn('SW registration failed:', err));
+      });
+    }
+  </script>
+</body>
+
+</html>
