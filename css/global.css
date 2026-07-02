@@ -286,10 +286,10 @@ body.app-loading #app-shell-loader {
     }
 
     #ipod-container {
-        --base-width: max(100vw, calc(100dvh * 0.5955));
+        --base-width: max(100vw, calc(100dvh * 0.5955 * 1.08));
     }
 
     body.dev-chrome-hidden #ipod-container {
-        --base-width: max(100vw, calc(100dvh * 0.5955));
+        --base-width: max(100vw, calc(100dvh * 0.5955 * 1.08));
     }
 }
