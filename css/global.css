@@ -278,7 +278,7 @@ body.app-loading #app-shell-loader {
    scale up to the largest size that fits the screen edge-to-edge. */
 @media (display-mode: standalone) {
     body {
-        padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
+        padding: 0;
     }
 
     .label-corner {
@@ -286,10 +286,10 @@ body.app-loading #app-shell-loader {
     }
 
     #ipod-container {
-        --base-width: min(100vw, calc(100dvh * 0.5955));
+        --base-width: max(100vw, calc(100dvh * 0.5955));
     }
 
     body.dev-chrome-hidden #ipod-container {
-        --base-width: min(100vw, calc(100dvh * 0.5955));
+        --base-width: max(100vw, calc(100dvh * 0.5955));
     }
 }
