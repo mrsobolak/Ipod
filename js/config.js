@@ -120,7 +120,8 @@ export const menus = {
             { label: 'Albums', submenu: 'albums' },
             { label: 'Songs', submenu: 'songs' },
             { label: 'Playlists', disabled: true },
-            { label: 'Import Music...', actionName: 'importMusic' }
+            { label: 'Import Music...', actionName: 'importMusic' },
+            { label: 'Receive from PC...', actionName: 'receiveFromPC' }
         ]
     },
     settings: {

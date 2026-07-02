@@ -10,6 +10,7 @@ import { state, elements, loadLibrary } from './config.js';
 import { renderMenu, switchMenu, resolveMenu } from './ui.js';
 import * as player from './player.js';
 import { initImport, triggerImport, clearImportedMusic } from './import.js';
+import { receiveFromPC } from './pcsync.js';
 
 // ── Scroll State ─────────────────────────────────────────────
 
@@ -172,7 +173,8 @@ function bindButton(el, action, rockClass = null) {
 const actionRegistry = {
     shuffleAndPlay: () => player.shuffleAndPlay(),
     importMusic: () => triggerImport(),
-    clearImportedMusic: () => clearImportedMusic()
+    clearImportedMusic: () => clearImportedMusic(),
+    receiveFromPC: () => receiveFromPC()
 };
 
 const selectAction = () => {
