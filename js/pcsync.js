@@ -10,7 +10,7 @@
  */
 
 import { readId3Tags } from './id3.js';
-import { addSong } from './musicdb.js';
+import { addSong, findDuplicate } from './musicdb.js';
 import { refreshUserLibrary, state } from './config.js';
 import { renderMenu } from './ui.js';
 
@@ -60,8 +60,9 @@ export async function receiveFromPC() {
     }
 
     let done = 0;
+    let skipped = 0;
     for (const item of list) {
-        state.importStatus = `Receiving ${done + 1} of ${list.length}...`;
+        state.importStatus = `Receiving ${done + skipped + 1} of ${list.length}...`;
         renderMenu();
 
         try {
@@ -77,18 +78,27 @@ export async function receiveFromPC() {
                 album: tags.album || 'Unknown Album',
                 rating: 0
             };
-            await addSong(meta, file, tags.picture ? tags.picture.blob : null);
 
-            // Tell the PC it can clear this one out of the dump folder.
+            const dup = await findDuplicate(meta);
+            if (dup) {
+                skipped++;
+            } else {
+                await addSong(meta, file, tags.picture ? tags.picture.blob : null);
+                done++;
+            }
+
+            // Tell the PC it can archive this one out of the dump folder.
             fetch(`${address}/consume/${encodeURIComponent(item.filename)}`, { method: 'POST' }).catch(() => {});
         } catch (err) {
             console.warn(`Failed to receive "${item.filename}":`, err);
         }
-        done++;
     }
 
     await refreshUserLibrary();
-    state.importStatus = `Received ${done} song${done === 1 ? '' : 's'} from PC.`;
+    state.importStatus = skipped > 0
+        ? `Received ${done}, skipped ${skipped} duplicate${skipped === 1 ? '' : 's'}.`
+        : `Received ${done} song${done === 1 ? '' : 's'} from PC.`;
+    renderMenu();
     renderMenu();
 
     setTimeout(() => {

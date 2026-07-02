@@ -87,3 +87,24 @@ export async function clearAll() {
         tx.onerror = () => reject(tx.error);
     });
 }
+
+
+// -- Duplicate Detection --------------------------------------
+
+function normalize(str) {
+    return String(str || '').trim().toLowerCase();
+}
+
+/**
+ * Checks if a song with the same title + artist + album already exists
+ * (case-insensitive, whitespace-trimmed). Returns the matching record, or
+ * undefined if none found.
+ */
+export async function findDuplicate(meta) {
+    const all = await getAllSongs();
+    return all.find(rec =>
+        normalize(rec.title) === normalize(meta.title) &&
+        normalize(rec.artist) === normalize(meta.artist) &&
+        normalize(rec.album) === normalize(meta.album)
+    );
+}

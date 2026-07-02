@@ -7,7 +7,7 @@
  */
 
 import { readId3Tags } from './id3.js';
-import { addSong, clearAll } from './musicdb.js';
+import { addSong, clearAll, findDuplicate } from './musicdb.js';
 import { refreshUserLibrary, state } from './config.js';
 import { renderMenu } from './ui.js';
 
@@ -25,6 +25,7 @@ async function handleFiles(fileList) {
     renderMenu();
 
     let done = 0;
+    let skipped = 0;
     for (const file of files) {
         try {
             const tags = await readId3Tags(file);
@@ -34,7 +35,12 @@ async function handleFiles(fileList) {
                 album: tags.album || 'Unknown Album',
                 rating: 0
             };
-            await addSong(meta, file, tags.picture ? tags.picture.blob : null);
+            const dup = await findDuplicate(meta);
+            if (dup) {
+                skipped++;
+            } else {
+                await addSong(meta, file, tags.picture ? tags.picture.blob : null);
+            }
         } catch (err) {
             console.warn(`Failed to import "${file.name}":`, err);
         }
@@ -44,7 +50,10 @@ async function handleFiles(fileList) {
     }
 
     await refreshUserLibrary();
-    state.importStatus = `Added ${done} song${done === 1 ? '' : 's'}.`;
+    const added = done - skipped;
+    state.importStatus = skipped > 0
+        ? `Added ${added}, skipped ${skipped} duplicate${skipped === 1 ? '' : 's'}.`
+        : `Added ${added} song${added === 1 ? '' : 's'}.`;
     renderMenu();
 
     setTimeout(() => {
