@@ -7,7 +7,7 @@
  */
 
 import { state, elements, loadLibrary, refreshPhotos, refreshVideos } from './config.js';
-import { renderMenu, switchMenu, resolveMenu } from './ui.js';
+import { renderMenu, switchMenu, resolveMenu, updateHeaderIcons } from './ui.js';
 import * as player from './player.js';
 import { initImport, triggerImport, clearImportedMusic } from './import.js';
 import { receiveFromPC } from './pcsync.js';
@@ -215,6 +215,7 @@ const selectAction = () => {
         switchMenu(item.submenu, 'forward', 0);
     } else if (item.action) {
         item.action();
+        updateHeaderIcons();
         renderMenu(elements.menuPrimary);
     } else if (item.actionName && actionRegistry[item.actionName]) {
         actionRegistry[item.actionName]();

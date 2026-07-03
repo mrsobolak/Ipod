@@ -158,7 +158,10 @@ class IpodDesign extends HTMLElement {
                   <div class="artist">Artist Name</div>
                   <div class="album">Album Name</div>
                   <div class="rating"></div>
-                  <div class="track-count">1 of 1</div>
+                  <div class="track-count-row">
+                    <div class="track-count">1 of 1</div>
+                    <div class="repeat-indicator"></div>
+                  </div>
                 </div>
               </div>
               <div class="player-controls">

@@ -239,4 +239,10 @@ export function switchMenu(newMenuKey, direction = 'forward', targetIndex = 0) {
 
 export function updateHeaderIcons() {
     elements.playIcon.classList.toggle('active', !elements.audio.paused && !elements.audio.ended);
-}
+
+    const repeatEl = elements.nowPlayingScreen.querySelector('.repeat-indicator');
+    if (repeatEl) {
+        const labels = { one: 'REPEAT 1', all: 'REPEAT ALL' };
+        repeatEl.textContent = labels[state.repeat] || '';
+        repeatEl.classList.toggle('active', state.repeat !== 'off');
+    }

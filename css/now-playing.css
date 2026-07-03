@@ -178,6 +178,23 @@
     color: #616161;
 }
 
+.track-info .track-count-row {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--u) * 6);
+}
+
+.track-info .repeat-indicator {
+    font-size: calc(var(--u) * 13);
+    font-weight: 700;
+    color: #1e88e5;
+    display: none;
+}
+
+.track-info .repeat-indicator.active {
+    display: inline-block;
+}
+
 /* ── Progress Bar ─────────────────────────────────────────── */
 
 .player-controls {

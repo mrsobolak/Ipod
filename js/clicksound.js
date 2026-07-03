@@ -2,12 +2,13 @@
  * clicksound.js — Synthesized click-wheel tick sound.
  *
  * Not a sample of any real device's sound — generates a short, sharp
- * transient on the fly via the Web Audio API. Real iPod click wheels used
- * a piezoelectric element, which produces a very brief, high-frequency
- * "tick" rather than a broad noise burst — this aims for that character:
- * short duration, high-passed, fast decay, and kept quiet so it doesn't
- * spike over music playing at full volume.
+ * transient on the fly via the Web Audio API: a brief tonal "tick" (piezo
+ * clickers are percussive and tonal, not noisy/gritty) plus a touch of
+ * high-frequency noise for texture. Gated behind the Click Sounds setting
+ * (off by default) and volume kept low regardless.
  */
+
+import { state } from './config.js';
 
 let ctx = null;
 
@@ -22,58 +23,71 @@ function getContext() {
 }
 
 /**
- * Plays a short synthetic "tick" — a brief high-passed noise burst with a
- * very fast decay, approximating a piezoelectric click.
+ * Plays a short synthetic "tick" — a brief tonal blip with a touch of
+ * high-passed noise for texture, fast exponential decay throughout.
  * @param {number} pitch - 1.0 = normal, >1 = higher/lighter, <1 = lower/heavier
  * @param {number} volume - peak gain, kept low so it never overpowers audio playback
  */
-export function playClick(pitch = 1, volume = 0.06) {
+export function playClick(pitch = 1, volume = 0.05) {
+    if (!state.clickSoundEnabled) return;
+
     const audioCtx = getContext();
     if (!audioCtx) return;
 
-    const duration = 0.008; // piezo ticks are very brief — not a "shh", a "tk"
-    const sampleCount = Math.max(1, Math.floor(audioCtx.sampleRate * duration));
+    const now = audioCtx.currentTime;
+    const duration = 0.012;
+
+    // Tonal component — a very short, fast-decaying triangle blip. This is
+    // what makes it read as a clean "tick" rather than a noisy hiss.
+    const osc = audioCtx.createOscillator();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(4200 * pitch, now);
+    osc.frequency.exponentialRampToValueAtTime(2600 * pitch, now + duration);
+
+    const oscGain = audioCtx.createGain();
+    oscGain.gain.setValueAtTime(volume, now);
+    oscGain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+
+    osc.connect(oscGain);
+    oscGain.connect(audioCtx.destination);
+    osc.start(now);
+    osc.stop(now + duration);
+
+    // A whisper of high-passed noise layered underneath for a bit of
+    // mechanical "snap" texture, much quieter than the tone.
+    const noiseDuration = 0.006;
+    const sampleCount = Math.max(1, Math.floor(audioCtx.sampleRate * noiseDuration));
     const buffer = audioCtx.createBuffer(1, sampleCount, audioCtx.sampleRate);
     const data = buffer.getChannelData(0);
     for (let i = 0; i < sampleCount; i++) {
         data[i] = (Math.random() * 2 - 1) * (1 - i / sampleCount);
     }
 
-    const source = audioCtx.createBufferSource();
-    source.buffer = buffer;
+    const noiseSource = audioCtx.createBufferSource();
+    noiseSource.buffer = buffer;
 
-    // High-pass to strip the low end — piezo ticks are all high-frequency snap,
-    // no body/boom to them.
     const highpass = audioCtx.createBiquadFilter();
     highpass.type = 'highpass';
-    highpass.frequency.value = 3500 * pitch;
+    highpass.frequency.value = 5000 * pitch;
 
-    const peak = audioCtx.createBiquadFilter();
-    peak.type = 'peaking';
-    peak.frequency.value = 5500 * pitch;
-    peak.Q.value = 2;
-    peak.gain.value = 6;
+    const noiseGain = audioCtx.createGain();
+    noiseGain.gain.setValueAtTime(volume * 0.4, now);
+    noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + noiseDuration);
 
-    const gain = audioCtx.createGain();
-    gain.gain.setValueAtTime(volume, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
-
-    source.connect(highpass);
-    highpass.connect(peak);
-    peak.connect(gain);
-    gain.connect(audioCtx.destination);
-
-    source.start();
-    source.stop(audioCtx.currentTime + duration);
+    noiseSource.connect(highpass);
+    highpass.connect(noiseGain);
+    noiseGain.connect(audioCtx.destination);
+    noiseSource.start(now);
+    noiseSource.stop(now + noiseDuration);
 }
 
 /** Slightly heavier click for physical button presses vs. wheel ticks. */
 export function playButtonClick() {
-    playClick(0.85, 0.07);
+    playClick(0.85, 0.06);
 }
 
 /** Lighter, quicker click for each wheel scroll step — quietest of the two
  *  since it fires far more often during a scroll gesture. */
 export function playWheelTick() {
-    playClick(1.2, 0.045);
+    playClick(1.2, 0.04);
 }

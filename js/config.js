@@ -110,7 +110,8 @@ export const state = {
     currentPhotoIndex: 0,
     isViewingVideo: false,
     currentVideoIndex: 0,
-    isShowingUpdateNotice: false
+    isShowingUpdateNotice: false,
+    clickSoundEnabled: false
 };
 
 // ── Setting Toggles ──────────────────────────────────────────
@@ -124,6 +125,9 @@ function toggleRepeat() {
     state.repeat = cycle[state.repeat];
 }
 
+function toggleClickSound() {
+    state.clickSoundEnabled = !state.clickSoundEnabled;
+}
 function goToNowPlaying() {
     if (state.queue.length === 0) return;
     state.isNowPlaying = true;
@@ -161,6 +165,7 @@ export const menus = {
             return [
                 { label: 'Shuffle', value: state.shuffle === 'off' ? 'Off' : 'Songs', action: toggleShuffle },
                 { label: 'Repeat', value: state.repeat === 'off' ? 'Off' : state.repeat === 'one' ? 'One' : 'All', action: toggleRepeat },
+                { label: 'Click Sounds', value: state.clickSoundEnabled ? 'On' : 'Off', action: toggleClickSound },
                 { label: 'Import Music...', actionName: 'importMusic' },
                 { label: 'Backup to Files...', actionName: 'backupToFiles' },
                 { label: 'Erase Imported Music', actionName: 'clearImportedMusic' }
