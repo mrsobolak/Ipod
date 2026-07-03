@@ -6,7 +6,7 @@
  * and the slide-left/slide-right transition between menu levels.
  */
 
-import { library, photos, videos, menus, state, elements } from './config.js';
+import { library, photos, videos, menus, state, elements, goToNowPlaying } from './config.js';
 import * as player from './player.js';
 import * as media from './media.js';
 
@@ -96,7 +96,7 @@ function getDynamicItems(key) {
 // ── Menu Resolution ──────────────────────────────────────────
 
 /** Resolves any menu key (static or dynamic) to { title, items }. */
-export function resolveMenu(key) {
+function resolveMenuRaw(key) {
     if (menus[key]) {
         return {
             title: menus[key].title,
@@ -111,6 +111,22 @@ export function resolveMenu(key) {
         return { title: albumName || 'Album', items: getDynamicItems(key) };
     }
     return { title: key, items: [] };
+}
+
+// Every menu except Main and Now Playing itself gets a "Now Playing"
+// shortcut pinned to the top whenever a queue is active -- lets you jump
+// straight back to playback from anywhere without backing all the way up.
+export function resolveMenu(key) {
+    const resolved = resolveMenuRaw(key);
+    if (key === 'main' || state.queue.length === 0) return resolved;
+
+    return {
+        title: resolved.title,
+        items: [
+            { label: '\u25B6 Now Playing', action: goToNowPlaying },
+            ...resolved.items
+        ]
+    };
 }
 
 // ── Render ────────────────────────────────────────────────────

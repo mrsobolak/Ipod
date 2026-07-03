@@ -131,7 +131,7 @@ function toggleRepeat() {
 function toggleClickSound() {
     state.clickSoundEnabled = !state.clickSoundEnabled;
 }
-function goToNowPlaying() {
+export function goToNowPlaying() {
     if (state.queue.length === 0) return;
     state.isNowPlaying = true;
 }
