@@ -262,3 +262,4 @@ export function updateHeaderIcons() {
         repeatEl.textContent = labels[state.repeat] || '';
         repeatEl.classList.toggle('active', state.repeat !== 'off');
     }
+}
