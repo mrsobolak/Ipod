@@ -9,6 +9,9 @@ import { elements } from './dom.js';
 import { getAllSongs } from './musicdb.js';
 import { getAllPhotos, getAllVideos } from './mediadb.js';
 
+// App build version -- bumped by 0.1 each time we ship a real update.
+export const APP_VERSION = '0.9';
+
 // ── Library ──────────────────────────────────────────────────
 
 export let library = [];
@@ -168,7 +171,8 @@ export const menus = {
                 { label: 'Click Sounds', value: state.clickSoundEnabled ? 'On' : 'Off', action: toggleClickSound },
                 { label: 'Import Music...', actionName: 'importMusic' },
                 { label: 'Backup to Files...', actionName: 'backupToFiles' },
-                { label: 'Erase Imported Music', actionName: 'clearImportedMusic' }
+                { label: 'Erase Imported Music', actionName: 'clearImportedMusic' },
+                { label: 'Version', value: 'v' + APP_VERSION }
             ];
         }
     },
