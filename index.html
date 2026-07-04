@@ -57,6 +57,7 @@
   <link rel="stylesheet" href="css/now-playing.css">
   <link rel="stylesheet" href="css/media.css">
   <link rel="stylesheet" href="css/update-notice.css">
+  <link rel="stylesheet" href="css/device-gate.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap"
@@ -65,6 +66,24 @@
 </head>
 
 <body class="app-loading">
+  <script>
+    (function () {
+      var ua = navigator.userAgent || '';
+      var isIOS = /iPhone|iPad|iPod/.test(ua) && !window.MSStream;
+      if (!isIOS) document.body.classList.add('device-gated');
+    })();
+  </script>
+  <div id="device-gate">
+    <div class="gate-title">You need an iPhone to use this</div>
+    <ol class="gate-steps">
+      <li>Open this page in Safari on your iPhone</li>
+      <li>Tap the Share icon</li>
+      <li>Tap "Add to Home Screen"</li>
+      <li>Launch it from your home screen for the full offline experience</li>
+    </ol>
+    <a class="gate-demo" href="#" target="_blank" rel="noopener noreferrer">Watch the Demo</a>
+    <div class="gate-android-note">Android? APK coming soon!</div>
+  </div>
   <div class="label-corner label-top-left">iPod Classic</div>
   <div class="label-corner label-top-right">Sobolak Tech</div>
 

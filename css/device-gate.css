@@ -1,0 +1,64 @@
+/* -- Device Gate (non-iPhone visitors) ---------------------- */
+
+#device-gate {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: #0a0a0c;
+    color: #f2f2f2;
+    font-family: 'Source Sans 3', -apple-system, sans-serif;
+    padding: calc(var(--u) * 40) calc(var(--u) * 24);
+    box-sizing: border-box;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+body.device-gated #device-gate {
+    display: flex;
+}
+
+body.device-gated #ipod-container,
+body.device-gated #app-shell-loader {
+    display: none !important;
+}
+
+#device-gate .gate-title {
+    font-size: calc(var(--u) * 26);
+    font-weight: 700;
+    margin-bottom: calc(var(--u) * 16);
+}
+
+#device-gate .gate-steps {
+    text-align: left;
+    max-width: 420px;
+    margin: 0 auto calc(var(--u) * 28);
+    padding-left: calc(var(--u) * 22);
+    font-size: calc(var(--u) * 16);
+    line-height: 1.6;
+    color: #d8d8d8;
+}
+
+#device-gate .gate-steps li {
+    margin-bottom: calc(var(--u) * 8);
+}
+
+#device-gate .gate-demo {
+    display: inline-block;
+    margin-bottom: calc(var(--u) * 20);
+    padding: calc(var(--u) * 10) calc(var(--u) * 22);
+    background: #2ea3ef;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: calc(var(--u) * 6);
+    font-size: calc(var(--u) * 15);
+}
+
+#device-gate .gate-android-note {
+    font-size: calc(var(--u) * 14);
+    color: #999;
+    margin-top: calc(var(--u) * 12);
+}
