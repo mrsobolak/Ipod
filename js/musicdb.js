@@ -68,6 +68,25 @@ export async function getAllSongs() {
     });
 }
 
+/** Increments a song's persistent play count by 1. Fire-and-forget safe. */
+export async function incrementPlayCount(id) {
+    const db = await openDb();
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE, 'readwrite');
+        const store = tx.objectStore(STORE);
+        const getReq = store.get(id);
+        getReq.onsuccess = () => {
+            const record = getReq.result;
+            if (!record) return resolve();
+            record.playCount = (record.playCount || 0) + 1;
+            store.put(record);
+        };
+        getReq.onerror = () => reject(getReq.error);
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+    });
+}
+
 export async function deleteSong(id) {
     const db = await openDb();
     return new Promise((resolve, reject) => {

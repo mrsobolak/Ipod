@@ -10,7 +10,7 @@ import { getAllSongs } from './musicdb.js';
 import { getAllPhotos, getAllVideos } from './mediadb.js';
 
 // App build version -- bumped by 0.1 each time we ship a real update.
-export const APP_VERSION = '1.1';
+export const APP_VERSION = '1.2';
 
 // ── Library ──────────────────────────────────────────────────
 
@@ -52,7 +52,8 @@ async function loadUserLibrary() {
         rating: rec.rating || 0,
         src: URL.createObjectURL(rec.audioBlob),
         artwork: rec.artworkBlob ? URL.createObjectURL(rec.artworkBlob) : '',
-        isUserImport: true
+        isUserImport: true,
+        playCount: rec.playCount || 0
     }));
 }
 
@@ -145,7 +146,7 @@ export const menus = {
             { label: 'Music', submenu: 'music' },
             { label: 'Photos', submenu: 'photos' },
             { label: 'Videos', submenu: 'videos' },
-            { label: 'Extras', disabled: true },
+            { label: 'Extras', submenu: 'extras' },
             { label: 'Settings', submenu: 'settings' },
             { label: 'Shuffle Songs', actionName: 'shuffleAndPlay' },
             { label: 'Now Playing', action: goToNowPlaying }
@@ -181,7 +182,13 @@ export const menus = {
     albums: { title: 'Albums', dynamic: 'albums' },
     songs: { title: 'Songs', dynamic: 'songs' },
     photos: { title: 'Photos', dynamic: 'photos' },
-    videos: { title: 'Videos', dynamic: 'videos' }
+    videos: { title: 'Videos', dynamic: 'videos' },
+    extras: {
+        title: 'Extras',
+        items: [
+            { label: 'Most Listened', submenu: 'mostListened' }
+        ]
+    }
 };
 
 // ── Element Cache ────────────────────────────────────────────

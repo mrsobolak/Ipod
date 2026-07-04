@@ -7,6 +7,7 @@
  */
 
 import { library, state, elements } from './config.js';
+import { incrementPlayCount } from './musicdb.js';
 import { updateHeaderIcons, renderMenu } from './ui.js';
 
 let playerInitialized = false;
@@ -47,6 +48,11 @@ export function playCurrent() {
     if (!song) return;
 
     state.isNowPlaying = true;
+
+    if (song.isUserImport && song.dbId) {
+        song.playCount = (song.playCount || 0) + 1;
+        incrementPlayCount(song.dbId).catch(err => console.warn('Play count update failed:', err));
+    }
 
     // Update text metadata
     const titleEl = elements.nowPlayingScreen.querySelector('.title');

@@ -102,6 +102,18 @@ function getDynamicItems(key) {
             action: () => confirmDeleteSong(song)
         }));
     }
+
+    if (key === 'mostListened') {
+        const played = library.filter(s => s.isUserImport && s.playCount > 0)
+            .sort((a, b) => b.playCount - a.playCount);
+        if (played.length === 0) return [{ label: 'No Plays Yet', disabled: true }];
+        return played.map((song, idx) => ({
+            label: song.title,
+            value: String(song.playCount),
+            artwork: song.artwork,
+            action: () => player.playQueue(played, idx)
+        }));
+    }
 }
 
 /** Confirms then permanently deletes a single user-imported song. */
@@ -135,6 +147,7 @@ function resolveMenuRaw(key) {
         return { title: albumName || 'Album', items: getDynamicItems(key) };
     }
     if (key === 'deleteSongs') return { title: 'Delete a Song', items: getDynamicItems(key) };
+    if (key === 'mostListened') return { title: 'Most Listened', items: getDynamicItems(key) };
     return { title: key, items: [] };
 }
 
