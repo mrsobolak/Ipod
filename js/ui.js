@@ -6,7 +6,8 @@
  * and the slide-left/slide-right transition between menu levels.
  */
 
-import { library, photos, videos, menus, state, elements, goToNowPlaying } from './config.js';
+import { library, photos, videos, menus, state, elements, goToNowPlaying, refreshUserLibrary } from './config.js';
+import { deleteSong } from './musicdb.js';
 import * as player from './player.js';
 import * as media from './media.js';
 
@@ -90,7 +91,27 @@ function getDynamicItems(key) {
         return items;
     }
 
-    return [];
+    if (key === 'deleteSongs') {
+        const userSongs = library.filter(s => s.isUserImport);
+        if (userSongs.length === 0) return [{ label: 'No Imported Songs', disabled: true }];
+        return userSongs.map(song => ({
+            label: song.title,
+            action: () => confirmDeleteSong(song)
+        }));
+    }
+}
+
+/** Confirms then permanently deletes a single user-imported song. */
+function confirmDeleteSong(song) {
+    const ok = window.confirm(`Delete "${song.title}"? This can't be undone.`);
+    if (!ok) return;
+
+    deleteSong(song.dbId).then(() => {
+        refreshUserLibrary();
+        state.selectedIndex = 0;
+        state.scrollOffset = 0;
+        renderMenu(elements.menuPrimary);
+    }).catch(err => console.warn('Delete failed:', err));
 }
 
 // ── Menu Resolution ──────────────────────────────────────────
@@ -110,6 +131,7 @@ function resolveMenuRaw(key) {
         const [, albumName] = payload.split('::');
         return { title: albumName || 'Album', items: getDynamicItems(key) };
     }
+    if (key === 'deleteSongs') return { title: 'Delete a Song', items: getDynamicItems(key) };
     return { title: key, items: [] };
 }
 

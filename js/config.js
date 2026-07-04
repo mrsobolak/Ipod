@@ -10,7 +10,7 @@ import { getAllSongs } from './musicdb.js';
 import { getAllPhotos, getAllVideos } from './mediadb.js';
 
 // App build version -- bumped by 0.1 each time we ship a real update.
-export const APP_VERSION = '0.9';
+export const APP_VERSION = '1.0';
 
 // ── Library ──────────────────────────────────────────────────
 
@@ -172,6 +172,7 @@ export const menus = {
                 { label: 'Import Music...', actionName: 'importMusic' },
                 { label: 'Backup to Files...', actionName: 'backupToFiles' },
                 { label: 'Erase Imported Music', actionName: 'clearImportedMusic' },
+                { label: 'Delete a Song...', submenu: 'deleteSongs' },
                 { label: 'Version', value: 'v' + APP_VERSION }
             ];
         }

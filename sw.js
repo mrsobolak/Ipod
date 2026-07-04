@@ -7,7 +7,7 @@
  * keep serving the stale version from cache.
  */
 
-const CACHE_NAME = 'ipod-shell-v21';
+const CACHE_NAME = 'ipod-shell-v22';
 
 const SHELL_FILES = [
     './',
