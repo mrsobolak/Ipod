@@ -10,7 +10,7 @@ import { getAllSongs } from './musicdb.js';
 import { getAllPhotos, getAllVideos } from './mediadb.js';
 
 // App build version -- bumped by 0.1 each time we ship a real update.
-export const APP_VERSION = '1.2';
+export const APP_VERSION = '1.3';
 
 // ── Library ──────────────────────────────────────────────────
 
@@ -115,7 +115,8 @@ export const state = {
     isViewingVideo: false,
     currentVideoIndex: 0,
     isShowingUpdateNotice: false,
-    clickSoundEnabled: false
+    clickSoundEnabled: false,
+    isPlayingGame: false
 };
 
 // ── Setting Toggles ──────────────────────────────────────────
@@ -186,7 +187,8 @@ export const menus = {
     extras: {
         title: 'Extras',
         items: [
-            { label: 'Most Listened', submenu: 'mostListened' }
+            { label: 'Most Listened', submenu: 'mostListened' },
+            { label: 'Block Drop', actionName: 'startGame' }
         ]
     }
 };

@@ -28,7 +28,11 @@ export const elements = {
     videoViewer: null,
     videoViewerEl: null,
     updateNotice: null,
-    updateNoticeOk: null
+    updateNoticeOk: null,
+    gameView: null,
+    gameCanvas: null,
+    gameScore: null,
+    gameOverBanner: null
 };
 
 export function initDom() {
@@ -59,6 +63,10 @@ export function initDom() {
 
     elements.updateNotice = document.getElementById('update-notice');
     elements.updateNoticeOk = document.getElementById('update-notice-ok');
+    elements.gameView = document.getElementById('game-view');
+    elements.gameCanvas = document.getElementById('game-canvas');
+    elements.gameScore = document.getElementById('game-score');
+    elements.gameOverBanner = document.getElementById('game-over-banner');
 
     return elements;
 }

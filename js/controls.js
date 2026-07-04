@@ -15,6 +15,7 @@ import { backupToFiles } from './backup.js';
 import { initMedia, triggerImportPhotos, triggerImportVideos, nextPhoto, prevPhoto, closePhotoViewer, toggleVideoPlayback, closeVideoViewer } from './media.js';
 import { initSwUpdate, dismissUpdateNotice } from './swupdate.js';
 import { playWheelTick, playButtonClick } from './clicksound.js';
+import { initGame, startGame, stopGame, gameMoveLeft, gameMoveRight, gameRotate, gameSoftDrop, gameHardDrop } from './game.js';
 
 // ── Scroll State ─────────────────────────────────────────────
 
@@ -71,6 +72,19 @@ function processScroll() {
         return;
     }
 
+    // Block Drop: wheel rotation moves the piece left/right
+    if (state.isPlayingGame) {
+        if (Math.abs(totalRotation) >= ROTATION_THRESHOLD) {
+            if (totalRotation > 0) gameMoveRight(); else gameMoveLeft();
+            totalRotation += totalRotation > 0 ? -ROTATION_THRESHOLD : ROTATION_THRESHOLD;
+            playWheelTick();
+            if (Math.abs(totalRotation) >= ROTATION_THRESHOLD) {
+                requestAnimationFrame(processScroll);
+                return;
+            }
+        }
+        return;
+    }
     // Viewing a photo or video: wheel does nothing (avoid confusing menu jumps)
     if (state.isViewingPhoto || state.isViewingVideo) {
         totalRotation = 0;
@@ -189,11 +203,13 @@ const actionRegistry = {
     receiveFromPC: () => receiveFromPC(),
     backupToFiles: () => backupToFiles(),
     importPhotos: () => triggerImportPhotos(),
-    importVideos: () => triggerImportVideos()
+    importVideos: () => triggerImportVideos(),
+    startGame: () => startGame()
 };
 
 const selectAction = () => {
     if (state.isShowingUpdateNotice) { dismissUpdateNotice(); return; }
+    if (state.isPlayingGame) { gameRotate(); return; }
     if (state.isNowPlaying) return;
     if (state.isViewingVideo) {
         toggleVideoPlayback();
@@ -224,6 +240,7 @@ const selectAction = () => {
 
 const backAction = () => {
     if (state.isShowingUpdateNotice) { dismissUpdateNotice(); return; }
+    if (state.isPlayingGame) { stopGame(); return; }
     if (state.isViewingPhoto) {
         closePhotoViewer();
         return;
@@ -245,6 +262,7 @@ const backAction = () => {
 };
 
 const nextAction = () => {
+    if (state.isPlayingGame) { gameSoftDrop(); return; }
     if (state.isViewingPhoto) { nextPhoto(); return; }
     player.nextTrack();
 };
@@ -262,6 +280,7 @@ function bindButtons() {
     bindButton(elements.nextButton, nextAction, 'rock-next');
     bindButton(elements.prevButton, prevAction, 'rock-prev');
     bindButton(elements.playPauseButton, () => {
+        if (state.isPlayingGame) { gameHardDrop(); return; }
         if (state.isViewingVideo) { toggleVideoPlayback(); return; }
         if (!state.queue.length || state.currentIndex < 0) return;
         if (elements.audio.paused) elements.audio.play();
@@ -279,6 +298,7 @@ export async function initControls() {
     initImport();
     initMedia();
     initSwUpdate();
+    initGame();
 
     await Promise.all([loadLibrary(), refreshPhotos(), refreshVideos()]);
     renderMenu(elements.menuPrimary);

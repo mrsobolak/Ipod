@@ -189,6 +189,11 @@ class IpodDesign extends HTMLElement {
               <div class="update-notice-button selected" id="update-notice-ok">OK</div>
             </div>
           </div>
+          <div id="game-view">
+            <canvas id="game-canvas"></canvas>
+            <div id="game-score">0</div>
+            <div id="game-over-banner">GAME OVER</div>
+          </div>
         </div>
       </div>
     </section>
