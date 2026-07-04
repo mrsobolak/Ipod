@@ -154,7 +154,7 @@ body.app-loading #app-shell-loader {
     touch-action: none;
 }
 
-/* ── DoodleDev Shell Primitives ───────────────────────────── */
+/* ── Shell Primitives ───────────────────────────── */
 
 .item {
     position: absolute;
