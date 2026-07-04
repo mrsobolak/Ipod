@@ -39,6 +39,7 @@ function getDynamicItems(key) {
         if (sorted.length === 0) return [EMPTY_LIBRARY_ITEM];
         return sorted.map((song, idx) => ({
             label: song.title,
+            artwork: song.artwork,
             action: () => player.playQueue(sorted, idx)
         }));
     }
@@ -60,6 +61,7 @@ function getDynamicItems(key) {
         const songs = library.filter(s => s.album === name);
         return songs.map((song, idx) => ({
             label: song.title,
+            artwork: song.artwork,
             action: () => player.playQueue(songs, idx)
         }));
     }
@@ -71,6 +73,7 @@ function getDynamicItems(key) {
         const songs = library.filter(s => s.artist === artistName && s.album === albumName);
         return songs.map((song, idx) => ({
             label: song.title,
+            artwork: song.artwork,
             action: () => player.playQueue(songs, idx)
         }));
     }
@@ -229,7 +232,11 @@ export function renderMenu(targetPane) {
         if (item.submenu) right = '<span class="material-icons arrow">chevron_right</span>';
         else if (item.value) right = `<span class="value">${item.value}</span>`;
 
-        div.innerHTML = `<span>${item.label}</span>${right}`;
+        const isSelected = realIndex === state.selectedIndex;
+        const thumb = (isSelected && item.artwork) ? `<img class="thumb" src="${item.artwork}" alt="">` : '';
+
+
+        div.innerHTML = `${thumb}<span>${item.label}</span>${right}`;
         fragment.appendChild(div);
     });
     pane.appendChild(fragment);

@@ -92,3 +92,14 @@
 .menu-item.disabled .arrow {
     color: #ccc;
 }
+/* -- Album Art Thumbnail (selected song row only) --------- */
+
+.menu-item .thumb {
+    width: calc(var(--u) * 28);
+    height: calc(var(--u) * 28);
+    border-radius: calc(var(--u) * 3);
+    object-fit: cover;
+    flex-shrink: 0;
+    margin-right: calc(var(--u) * 8);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.4);
+}

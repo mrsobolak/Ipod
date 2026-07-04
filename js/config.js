@@ -10,7 +10,7 @@ import { getAllSongs } from './musicdb.js';
 import { getAllPhotos, getAllVideos } from './mediadb.js';
 
 // App build version -- bumped by 0.1 each time we ship a real update.
-export const APP_VERSION = '1.0';
+export const APP_VERSION = '1.1';
 
 // ── Library ──────────────────────────────────────────────────
 
