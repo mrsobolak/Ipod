@@ -145,7 +145,7 @@ export function resolveMenu(key) {
     return {
         title: resolved.title,
         items: [
-            { label: '\u25B6 Now Playing', action: goToNowPlaying },
+            { label: 'Now Playing', action: goToNowPlaying },
             ...resolved.items
         ]
     };
